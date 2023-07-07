@@ -1,19 +1,13 @@
 #include <WiFi.h>
-#include <WiFiClient.h>
-#include <WiFiAP.h>
 
 #define carga1 16
 #define carga2 17
 #define carga3 18
 #define carga4 19
 
-const char* ssid = "MYESP32";      //crie uma rede WiFi e insira aqui o nome da rede ou use uma rede já existente
-const char* password = "SENAI2023";  //coloque a senha da rede WiFi 
+const char* ssid = "Douglas-Laptop";      //crie uma rede WiFi e insira aqui o nome da rede ou use uma rede já existente
+const char* password = "87654321abc";  //coloque a senha da rede WiFi 
 
-IPAddress local_IP(192, 168, 0, 200);
-// Set your Gateway IP address
-IPAddress gateway(192, 168, 0, 1);
-IPAddress subnet(255, 255, 255, 0);
 WiFiServer server(80);
 
 void setup() {
@@ -23,24 +17,20 @@ void setup() {
   pinMode(carga3, OUTPUT);
   pinMode(carga4, OUTPUT);
 
-  WiFi.mode(WIFI_AP_STA); 
-
-  if (!WiFi.softAPConfig(local_IP, gateway, subnet)) {
-    Serial.println("AP Config Failed");
-    return;
-  }
-
   delay(10);
+  
+  WiFi.begin(ssid, password);
 
-  if (!WiFi.softAP(ssid, password)) {
-    Serial.println("AP Failed");
-    return;
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
   }
 
-  Serial.println("Server started");
-  Serial.print("AP IP address: ");
-  IPAddress IP = WiFi.softAPIP();
-  Serial.println(IP);
+  Serial.println("");
+  Serial.println("WiFi connected.");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+
   server.begin();
 }
 
