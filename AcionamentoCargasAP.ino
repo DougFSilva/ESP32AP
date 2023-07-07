@@ -8,6 +8,12 @@
 const char* ssid = "Douglas-Laptop";      //crie uma rede WiFi e insira aqui o nome da rede ou use uma rede já existente
 const char* password = "87654321abc";  //coloque a senha da rede WiFi 
 
+IPAddress local_IP(192, 168, 0, 200);
+// Set your Gateway IP address
+IPAddress gateway(192, 168, 0, 1);
+IPAddress subnet(255, 255, 255, 0);
+IPAddress primaryDNS(8, 8, 8, 8);   //optional
+IPAddress secondaryDNS(8, 8, 4, 4); //optional
 WiFiServer server(80);
 
 void setup() {
@@ -18,6 +24,10 @@ void setup() {
   pinMode(carga4, OUTPUT);
 
   delay(10);
+
+  if (!WiFi.config(local_IP, gateway, subnet, primaryDNS, secondaryDNS)) {
+    Serial.println("Falha ao configurar wifi");
+  }
   
   WiFi.begin(ssid, password);
 
